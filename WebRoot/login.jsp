@@ -4,7 +4,7 @@
 <head>
     <title>主页</title>
 </head>
-<form action="<c:url value='/JobHuntingServlet?method=Login'/>" method="post">
+<form action="<c:url value='/JobHuntingServlet?method=UserLogin'/>" method="post">
     <input type="hidden" name="method" value="add">
     <table border="0" align="center" width="40%" style="margin-left: 100px">
         <tr>
