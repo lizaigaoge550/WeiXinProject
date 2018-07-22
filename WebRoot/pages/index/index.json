@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "search-box":"../components/searchBox/searchBox",
+    "icon-item":"../components/iconItem/iconItem",
+    "info-item":"../components/infoItem/infoItem"
+  }
+}

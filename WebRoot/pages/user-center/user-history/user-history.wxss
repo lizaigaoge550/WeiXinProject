@@ -1,0 +1,7 @@
+/* pages/user-center/user-history/user-history.wxss */
+.end-line{
+  background-color:#fff;
+  color:#ddd;
+  font-size:28rpx;
+  padding:20rpx;
+}

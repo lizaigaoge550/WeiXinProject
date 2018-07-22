@@ -1,0 +1,30 @@
+/* pages/user-center/index.wxss */
+.userinfo {
+  height:340rpx;
+  background-color:#FF5C01;
+  padding-top:40rpx;
+}
+.btn-login{
+  margin-top:40rpx;
+}
+.userinfo-avatar {
+  width: 140rpx;
+  height: 140rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+  border:6rpx solid #ffffff;
+}
+.userinfo-nickname {
+  color: #ffffff;
+  text-align: center;
+}
+.info-list-item{
+  height:80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color:#fff;
+  font-size:32rpx;
+  border-bottom:2rpx solid #ddd; 
+  padding :0rpx 20rpx; 
+}

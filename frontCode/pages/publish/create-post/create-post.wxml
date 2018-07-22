@@ -1,0 +1,40 @@
+<!--pages/publish/create-post/create-post.wxml-->
+<view class="container-gray">
+  <view class="list">
+    <view class="list-item">
+      <label>标题</label>
+      <input placeholder='请输入标题' class="set-input"></input>
+    </view>
+    <view class="list-item">
+      <label>类型</label>
+      <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
+      <view class="picker">
+        {{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
+        <span class="fa fa-angle-right"></span>
+      </view>
+    </picker>
+    </view>
+     <view class="list-item">
+      <label>手机号</label>
+      <input placeholder='请输入标题' class="set-input"></input>
+    </view>
+  </view>
+  <view class="list">
+    <li class="list-item">
+      详细信息
+    </li>
+    <li class="list-item">
+      <textarea placeholder='请具体描述' class="set-textarea"></textarea>
+    </li>
+  </view>
+  <view class="list">
+    <li class="list-item">
+      <label>发布收费</label>
+      <span>¥2</span> 
+    </li>
+    <li class="list-item">
+      <label>我要置顶</label>
+      <switch></switch>
+    </li>
+  </view>
+</view>

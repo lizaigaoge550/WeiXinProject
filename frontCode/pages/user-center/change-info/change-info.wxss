@@ -1,0 +1,20 @@
+/* pages/user-center/change-info/change-info.wxss */
+.list{
+  font-size:32rpx;
+}
+.list-item{
+  background-color:#fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom:2rpx solid #ddd; 
+  padding :20rpx; 
+}
+.userinfo-avatar{
+  width:100rpx;
+  height:100rpx;
+  border-radius: 50%;
+}
+.userinfo-name{
+   text-align: right; 
+}

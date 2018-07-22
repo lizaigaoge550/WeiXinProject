@@ -1,0 +1,44 @@
+<!--pages/components/infoItem/infoItem.wxml   简略信息展示-->
+<view class="info-item">
+  <view class="box-left">
+    <image class="user-photo" src="{{infoData.photo}}"/>
+  </view> 
+  <view class="box-right">
+    <!--头部  -->
+    <view class="post-header">
+      <text class="user-name">{{infoData.name}}</text>
+      <text class="tag red-tag" wx:if="{{infoData.isTop}}">置顶</text>
+      <text class="tag blue-tag">{{infoData.tag}}</text>
+      <button class="call" bindtap='toCall'>
+        <image class="call-icon" src="../../../static/image/tel.svg"/>
+        拨打电话
+      </button> 
+    </view>
+    <!--帖子详情  -->
+    <view class="post-detail {{moreStyle}}">
+      {{infoData.detail}}
+    </view>
+    <view class="show-more" bindtap='showMore'>
+      {{showMore}}
+    </view>
+    <!--帖子配图  -->
+    <view class="post-img">
+      <view class="img-box" wx:for="{{infoData.images}}" wx:for-index="idx" wx:key="unique" wx:if="{{idx<3}}">
+        <image class="set-img" src="{{item}}"/>
+         <text class="img-num" wx:if="{{infoData.images.length>3&&idx===2}}">共{{infoData.images.length}}张</text> 
+      </view> 
+    </view>
+    <view class="address">{{infoData.address}}</view>
+    <!--帖子数据统计  -->
+    <view class="post-data">
+      <text>{{infoData.pubTime}}</text>
+      <view>
+        <image class="set-icon" src="../../../static/image/browse.svg"/>
+        {{infoData.browse}}
+       <image class="set-icon" src="../../../static/image/reply.svg"/>
+        {{infoData.comments}}
+      </view>
+    </view>
+  </view>
+</view>
+

@@ -1,0 +1,9 @@
+<!--pages/components/pickList/pickList.wxml  多级联动菜单-->
+<view class="class-list">
+  <ul class="pick">
+    <li></li>
+  </ul>
+  <ul class="list">
+    <li></li>
+  </ul>
+</view>

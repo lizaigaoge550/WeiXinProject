@@ -1,0 +1,22 @@
+<!--index.wxml   同城/首页-->
+<view class="main">
+  <!--搜索框 -->
+  <search-box bind:goSearch="goSearch"></search-box>
+  <!-- 图标组 -->
+  <swiper class="icon-group" indicator-dots="true"  indicator-active-color="#1AAD16">
+    <swiper-item wx:for="{{swiperList}}" wx:key="unique" wx:for-item="idx">
+      <icon-item wx:for="{{iconList}}"  wx:key="unique"  wx:for-index="itemIdx" wx:if="{{itemIdx+1>(idx-1)*10 && itemIdx<idx*10}}"   bg-color="{{item.bgColor}}" icon-title="{{item.iconTitle}}"  bind:toJump="toJump" data-num="{{item.num}}" data-title="{{item.iconTitle}}">
+        <icon slot="icon" class="fa fa-{{item.iconIcon}}"></icon>
+      </icon-item>
+    </swiper-item>
+  </swiper>
+  <!--广告位  -->
+  <view class="ad-box">
+    优质广告位，等你来抢位！
+  </view>
+  <!-- 信息栏 -->
+  <view class="info-box">
+    <text class="info-title">最新推荐</text>
+    <info-item info-data="{{infoData}}"></info-item>
+  </view>
+</view>

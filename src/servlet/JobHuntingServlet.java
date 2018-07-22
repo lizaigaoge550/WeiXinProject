@@ -25,7 +25,7 @@ public class JobHuntingServlet extends BaseServlet
 	private JobHuntingService jobHuntingService = new JobHuntingService();
 	
 	//添加发布记录
-	public void AddPublishMessage(HttpServletRequest request, HttpServletResponse response)
+	public String AddPublishMessage(HttpServletRequest request, HttpServletResponse response)
 	{
 		JobHunting record = new JobHunting();
 		DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -113,11 +113,11 @@ public class JobHuntingServlet extends BaseServlet
 		if( jobHuntingService.AddRecord(record))
 		{
 			System.out.println("add successful");
-			request.setAttribute("state",1);
+			return "{\"state\":1}";
 		}
 		else
 		{
-			request.setAttribute("state", 0);
+			return "{\"state\":0}";
 		}
 	}
 	
@@ -142,16 +142,16 @@ public class JobHuntingServlet extends BaseServlet
 	}
 	
 	//管理员, 用户删除信息
-	public void DeleteMessage(HttpServletRequest request, HttpServletResponse response)
+	public String DeleteMessage(HttpServletRequest request, HttpServletResponse response)
 	{
 		int id = Integer.parseInt(request.getParameter("id"));
 		if(jobHuntingService.DeleteMessage(id))
 		{
-			request.setAttribute("state", 1);
+			return "{\"state\":1}";
 		}
 		else
 		{
-			request.setAttribute("state", 0);
+			return "{\"state\":0}";
 		}
 		
 	}
@@ -290,30 +290,30 @@ public class JobHuntingServlet extends BaseServlet
 			
 		}
 
-	public void RequestHumanCheck(HttpServletRequest request, HttpServletResponse response)
+	public String RequestHumanCheck(HttpServletRequest request, HttpServletResponse response)
 	{
 		int id = Integer.parseInt(request.getParameter("id"));
 		if (jobHuntingService.InsertToHumanCheckTable(id))
 		{
-			request.setAttribute("state", 1);
+			return "{\"state\":1}";
 		}
 		else
 		{
-			request.setAttribute("state", 0);
+			return "{\"state\":0}";
 		}
 	}
 
-	public void ModifyTelephoneNumber(HttpServletRequest request, HttpServletResponse response)
+	public String ModifyTelephoneNumber(HttpServletRequest request, HttpServletResponse response)
 	{
 		String wx_id = request.getParameter("wx_id");
 		String telephone = request.getParameter("telephone");
 		if(jobHuntingService.ModifyTelephone(wx_id, telephone))
 		{
-			request.setAttribute("state", 1);
+			return "{\"state\":1}";
 		}
 		else
 		{
-			request.setAttribute("state", 0);
+			return "{\"state\":0}";
 		}
 	}
 }

@@ -1,0 +1,19 @@
+/* pages/publish/create-post/create-post.wxss */
+.list{
+  font-size:32rpx;
+  margin-bottom:20rpx;
+}
+.list-item{
+  background-color:#fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom:2rpx solid #ddd; 
+  padding :20rpx; 
+}
+.set-input{
+  text-align: right;
+}
+.set-textarea{
+  text-align: left;
+}

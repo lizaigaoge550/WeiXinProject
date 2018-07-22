@@ -1,0 +1,21 @@
+<!--pages/user-center/index.wxml  用户中心/“我的” 页面-->
+<view class="container-gray">
+  <view class="userinfo">
+    <!--未登录显示状态  -->
+    <view wx:if="{{!hasUserInfo && canIUse}}" >
+      <button size="mini" open-type="getUserInfo" bindgetuserinfo="getUserInfo" class="btn-login"> 登录</button>
+    </view>
+    <!--登录后头像即昵称显示  -->
+    <view wx:else>
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" 
+      mode="aspectFill"></image>
+      <view class="userinfo-nickname">{{userInfo.nickName}}</view>
+    </view>
+  </view>
+  <!-- 修改个人资料及已发布信息 -->
+  <ul wx:if="{{hasUserInfo}}" class="info-list">
+   <li class="info-list-item" wx:for="{{infoList}}"  wx:key="unique" wx:for-item="item" bindtap="toJump" data-target="{{item.target}}">
+     <text>{{item.text}}</text> <span class="fa fa-angle-right"></span>
+   </li>
+  </ul>
+</view>

@@ -1,0 +1,5 @@
+<!--pages/components/searchBox/searchBox.wxml   搜索框组件-->
+<view class="search-box">
+    <icon bindtap="goSearch" type="search" class="icon" size="14"></icon>
+    <input type="text" class="content" placeholder='请输入关键词' bindinput="getValue"/>
+  </view>

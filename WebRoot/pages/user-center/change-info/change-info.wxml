@@ -1,0 +1,24 @@
+<!--pages/user-center/change-info/change-info.wxml 修改用户信息-->
+<view class="container-gray">
+  <ul class="list">
+    <li class="list-item">
+      <label>头像</label>
+      <image src="{{userInfo.avatarUrl}}" class="userinfo-avatar" mode="aspectFill" bindtap="chooseAvatar"></image>
+    </li>
+    <li class="list-item">
+      <label>姓名</label>
+      <input class="userinfo-name"  value="{{userInfo.nickName}}"/>
+    </li>
+    <li class="list-item">
+      <label>性别</label>
+      <radio-group class="radio-group" bindchange="radioChange">
+        <label class="radio" wx:for="{{genderList}}" wx:key="unique">
+          <radio value="{{item.value}}" checked="{{item.value===userInfo.gender}}"/>{{item.text}}
+        </label>
+      </radio-group>
+    </li>
+    <li class="list-item">
+      <label>手机</label>
+    </li>
+  </ul>
+</view>
