@@ -101,7 +101,7 @@ public class JobHuntingDao {
 		}
 		else
 		{
-			record.setState(0);
+			record.setState(-1);
 				
 		}
 		try {
@@ -140,7 +140,8 @@ public class JobHuntingDao {
            
         }catch (Exception e)
         {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
+        	return null;
         }
 	}
 	
@@ -174,14 +175,14 @@ public class JobHuntingDao {
 			Number number = (Number) qr.query(countSql, new ScalarHandler<>());
 			int tr = number.intValue();
 			pb.setTr(tr);
-			String sql = "select * from job_hunting where grade > 0 and state = 1 order by top desc,createTime asc limit ?,?";
+			String sql = "select * from job_hunting  order by top desc,createTime asc limit ?,?";
 			Object[] params = {(pc-1)*pr, pr};
 			List<JobHunting> beanList = qr.query(sql, new BeanListHandler<>(JobHunting.class), params);
 			pb.setBeanList(beanList);
 			return pb;
 		}catch(Exception e)
 		{
-			throw new RuntimeException(e);
+			return null;
 		}
 	}
 

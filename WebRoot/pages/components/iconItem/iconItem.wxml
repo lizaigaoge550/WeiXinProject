@@ -1,7 +1,0 @@
-<!--pages/components/iconItem/iconItem.wxml   导航图标组件-->
- <view class="icon-item" bindtap='toJump'>
-    <view class="icon-icon" style="background-color:{{bgColor}}">
-      <slot></slot>    
-    </view>
-    <view>{{iconTitle}}</view>
- </view>

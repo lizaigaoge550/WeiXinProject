@@ -1,7 +1,0 @@
-/* pages/components/pickList/pickList.wxss */
-.pick-list{
-  width:100%;
-}
-.pick{
-  display:flex;
-}

@@ -1,8 +1,0 @@
-<!--pages/index/classify/classify.wxml   分类信息展示页面-->
-<view>
-  <search-box bind:goSearch="goSearch"></search-box>
-  <!-- <pick-list></pick-list> -->
-  分类展示信息
-  <image class="publish" bindtap='toPublish' src="../../../static/image/plus.svg"/>
-  <info-item info-data="{{infoData}}"></info-item>
-</view>

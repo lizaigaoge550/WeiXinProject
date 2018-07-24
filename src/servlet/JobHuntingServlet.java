@@ -4,7 +4,9 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +21,7 @@ import domain.JobHunting;
 import domain.PageBean;
 import service.JobHuntingService;
 import utils.Constant;
+import com.alibaba.fastjson.JSON;
 
 public class JobHuntingServlet extends BaseServlet 
 {
@@ -122,23 +125,49 @@ public class JobHuntingServlet extends BaseServlet
 	}
 	
 	//当有人查看某条记录的详细信息的时候，去更新信息。
-	public void UpdatePublishMessage(HttpServletRequest request, HttpServletResponse response)
+	public String UpdatePublishMessage(HttpServletRequest request, HttpServletResponse response)
 	{
 		int id = Integer.parseInt(request.getParameter("id"));
 		JobHunting record = jobHuntingService.UpdateRecord(id);
-		request.setAttribute("record", record);
-		request.setAttribute("state", 1);
+		Map<String, Object> resJson = new HashMap();
+		if(record != null)
+		{
+			resJson.put("state",1);
+			resJson.put("record",record);
+		}
+		else
+		{
+			resJson.put("state",0);
+			//resJson.put("records",record);
+		}
+		String jsonString = JSON.toJSONString(resJson);
+		return jsonString;
+		//request.setAttribute("state", 1);
 	}
 
 	//按照一定的排序方式列出发布记录
-	public void PublishMessagesList(HttpServletRequest request, HttpServletResponse response)
+	public String PublishMessagesList(HttpServletRequest request, HttpServletResponse response)
 	{
 		int pc = getPc(request);
 		int pr = 2;
 		PageBean<JobHunting> pb = jobHuntingService.GetPublishMessages(pc, pr);
 		pb.setUrl(getUrl(request));
-		request.setAttribute("pb", pb);
-		request.setAttribute("state", 1);
+//		request.setAttribute("pb", pb);
+//		request.setAttribute("state", 1);
+		Map<String, Object> resJson = new HashMap();
+		if(pb != null)
+		{
+			System.out.println("publish successful " + pb.getBeanList().size());
+			resJson.put("state",1);
+			resJson.put("records",pb);
+		}
+		else
+		{
+			resJson.put("state",0);
+			//resJson.put("records",record);
+		}
+		String jsonString = JSON.toJSONString(resJson);
+		return jsonString;
 	}
 	
 	//管理员, 用户删除信息

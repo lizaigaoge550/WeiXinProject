@@ -1,4 +1,0 @@
-<!--pages/user-center/user-history/user-history.wxml  我的发布-->
-<view class="container-gray">
-  <view class="end-line">--------  都显示完了  --------</view>
-</view>

@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "search-box": "../../components/searchBox/searchBox",
-    "pick-list":"../../components/pickList/pickList",
-    "info-item":"../../components/infoItem/infoItem"
-  }  
-}
