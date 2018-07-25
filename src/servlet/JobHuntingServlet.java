@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
@@ -28,7 +29,7 @@ public class JobHuntingServlet extends BaseServlet
 	private JobHuntingService jobHuntingService = new JobHuntingService();
 	
 	//添加发布记录
-	public String AddPublishMessage(HttpServletRequest request, HttpServletResponse response)
+	public void AddPublishMessage(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		JobHunting record = new JobHunting();
 		DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -113,19 +114,21 @@ public class JobHuntingServlet extends BaseServlet
 		record.setViewNumber(Constant.initViewNumber);
 		//设置评论
 		record.setComments(Constant.initComments);
+		Map<String, Object> resJson = new HashMap();
 		if( jobHuntingService.AddRecord(record))
 		{
 			System.out.println("add successful");
-			return "{\"state\":1}";
+			resJson.put("state", 1);
 		}
 		else
 		{
-			return "{\"state\":0}";
+			resJson.put("state",0);
 		}
+		response.getWriter().write(JSON.toJSONString(resJson));
 	}
 	
 	//当有人查看某条记录的详细信息的时候，去更新信息。
-	public String UpdatePublishMessage(HttpServletRequest request, HttpServletResponse response)
+	public void UpdatePublishMessage(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		int id = Integer.parseInt(request.getParameter("id"));
 		JobHunting record = jobHuntingService.UpdateRecord(id);
@@ -134,6 +137,8 @@ public class JobHuntingServlet extends BaseServlet
 		{
 			resJson.put("state",1);
 			resJson.put("record",record);
+			//request.setAttribute("state", 1);
+			//request.setAttribute("record", record);
 		}
 		else
 		{
@@ -141,12 +146,13 @@ public class JobHuntingServlet extends BaseServlet
 			//resJson.put("records",record);
 		}
 		String jsonString = JSON.toJSONString(resJson);
-		return jsonString;
+		response.getWriter().write(jsonString);
+		//return jsonString;
 		//request.setAttribute("state", 1);
 	}
 
 	//按照一定的排序方式列出发布记录
-	public String PublishMessagesList(HttpServletRequest request, HttpServletResponse response)
+	public void PublishMessagesList(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		int pc = getPc(request);
 		int pr = 2;
@@ -160,29 +166,33 @@ public class JobHuntingServlet extends BaseServlet
 			System.out.println("publish successful " + pb.getBeanList().size());
 			resJson.put("state",1);
 			resJson.put("records",pb);
+//			request.setAttribute("state", 1);
+//			request.setAttribute("record", pb);
 		}
 		else
 		{
 			resJson.put("state",0);
 			//resJson.put("records",record);
 		}
-		String jsonString = JSON.toJSONString(resJson);
-		return jsonString;
+		//String jsonString = JSON.toJSONString(resJson);
+		//return jsonString;
+		response.getWriter().write(JSON.toJSONString(resJson));
 	}
 	
 	//管理员, 用户删除信息
-	public String DeleteMessage(HttpServletRequest request, HttpServletResponse response)
+	public void DeleteMessage(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		int id = Integer.parseInt(request.getParameter("id"));
+		Map<String, Object> jsonString = new HashMap();
 		if(jobHuntingService.DeleteMessage(id))
 		{
-			return "{\"state\":1}";
+			jsonString.put("state",1);
 		}
 		else
 		{
-			return "{\"state\":0}";
+			jsonString.put("state",0);
 		}
-		
+		response.getWriter().write(JSON.toJSONString(jsonString));
 	}
 	
 	private int getPc(HttpServletRequest request)
@@ -210,19 +220,25 @@ public class JobHuntingServlet extends BaseServlet
 	}
 
 	//用户登录
-	public void UserLogin(HttpServletRequest request, HttpServletResponse response)
+	public void UserLogin(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		String wx_id = request.getParameter("wx_id");
 		System.out.println("wx_id " + wx_id);
 		boolean isExist = jobHuntingService.QueryUser(wx_id);
 		System.out.println("Exist........ " + isExist);
 		HttpSession session = request.getSession();
+		Map<String, Object> jsonString = new HashMap();
 		if(isExist)
 		{
 			System.out.println("user exist...");
 			session.setAttribute("wx_id", wx_id);
+			jsonString.put("state", 1);
 		}
-		
+		else
+		{
+			jsonString.put("state", 0);
+		}
+		response.getWriter().write(JSON.toJSONString(jsonString));
 	}
 	
 	public void AdamLogin(HttpServletRequest request, HttpServletResponse response)
@@ -241,23 +257,35 @@ public class JobHuntingServlet extends BaseServlet
 	}
 	 
 	//用户查看自己发布的信息
-	public void ShowUserInfo(HttpServletRequest request, HttpServletResponse response)
+	public void ShowUserInfo(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
+		Map<String, Object> jsonString = new HashMap();
 		HttpSession session = request.getSession();
 		if(session.getAttribute("wx_id") != null)
 		{
+			
 			String wx_id = (String) session.getAttribute("wx_id");
 			int pc = getPc(request);
 			int pr = 10;
 			PageBean<JobHunting> pb = jobHuntingService.GetPublishMessages(pc, pr, wx_id);
 			pb.setUrl(getUrl(request));
-			request.setAttribute("pb", pb);
-			request.setAttribute("state", 1);
+			//request.setAttribute("pb", pb);
+			//request.setAttribute("state", 1);
+			if(pb != null)
+			{
+				jsonString.put("records",pb);
+				jsonString.put("state",1);
+			}
+			else
+			{
+				jsonString.put("state", 0);
+			}
 		}
 		else
 		{
-			System.out.println("session is not exist");
+			jsonString.put("state", -1);
 		}
+		response.getWriter().write(JSON.toJSONString(jsonString));
 	}
 
 	//管理员权限：根据wx_id 查询记录
@@ -319,30 +347,34 @@ public class JobHuntingServlet extends BaseServlet
 			
 		}
 
-	public String RequestHumanCheck(HttpServletRequest request, HttpServletResponse response)
+	public void RequestHumanCheck(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		int id = Integer.parseInt(request.getParameter("id"));
+		Map<String, Object> jsonString = new HashMap();
 		if (jobHuntingService.InsertToHumanCheckTable(id))
 		{
-			return "{\"state\":1}";
+			jsonString.put("state", 1);
 		}
 		else
 		{
-			return "{\"state\":0}";
+			jsonString.put("state", 0);
 		}
+		response.getWriter().write(JSON.toJSONString(jsonString));
 	}
 
-	public String ModifyTelephoneNumber(HttpServletRequest request, HttpServletResponse response)
+	public void ModifyTelephoneNumber(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		String wx_id = request.getParameter("wx_id");
 		String telephone = request.getParameter("telephone");
+		Map<String, Object> jsonString = new HashMap();
 		if(jobHuntingService.ModifyTelephone(wx_id, telephone))
 		{
-			return "{\"state\":1}";
+			jsonString.put("state", 1);
 		}
 		else
 		{
-			return "{\"state\":0}";
+			jsonString.put("state", 0);
 		}
+		response.getWriter().write(JSON.toJSONString(jsonString));
 	}
 }

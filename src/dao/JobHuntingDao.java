@@ -207,7 +207,8 @@ public class JobHuntingDao {
 			return pb;
 		}catch(Exception e)
 		{
-			throw new RuntimeException(e);
+			return null;
+			//throw new RuntimeException(e);
 		}
 	}
 
