@@ -1,0 +1,64 @@
+AddPublicMessagePic 添加记录（带图片）, AddPublucMessage 添加记录 不带图片(默认 image是"")
+	需要字段 
+	title, --> string 
+	category, --> int
+	phone, --> string
+	description --> string
+	type --> int (目前只有两种兼职or全职)
+	name --> string
+	gender --> int
+	image --> string
+
+	返回
+	{'state':1} 表示添加成功
+	{'state':0} 表示添加失败
+
+
+UpdatePublishMessage 更新记录，当有人查看当前记录的时候，更新积分
+	需要字段
+	id --> 当前记录的id
+
+	返回
+	{'state':1, 'record':record} 若更新成功，状态为1， 并且返回该条记录，因为要给用户显示这条记录的全部信息
+	{'state':0} 更新失败
+	
+PublishMeaagesList 展示记录列表
+	需要字段
+	pc --> 当前页
+	返回
+	{'state':1, 'records':pb} 成功，返回记录列表
+	{'state':0}
+	
+DelelteMessage 删除记录
+	需要字段
+	id --> 删除记录的id
+	返回
+	{'state':1,'state':0}
+
+UserLogin 获取用户openid
+	需要的字段
+	appid
+	appsecret
+	code
+	返回
+	{'state':0, 'state':1}
+	
+ShowUserInfo 用户查看自己发布的信息
+	不需要前台的字段
+	返回
+	{’state‘:1, 'records':pb} 若成功，则返回该用户的记录列表
+	{'state':0}
+
+RequestHumanCheck 当前发布信息不合法，用户可以申请人工审核
+	id --> 当前记录的id
+	返回
+	{'state':1， 'state':0}
+
+ModifyTelephoneNumber 用户修改自己的手机号
+	telephone -->手机号
+	返回
+	{'state':1, 'state':0}
+
+	
+	
+
