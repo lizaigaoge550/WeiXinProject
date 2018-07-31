@@ -195,7 +195,7 @@ public class JobHuntingServlet extends BaseServlet
 	{
 		int pc = getPc(request);
 		int pr = 2;
-		PageBean<JobHunting> pb = jobHuntingService.GetPublishMessages(pc, pr);
+		PageBean<JobHunting> pb = jobHuntingService.GetPublishMessages(pc, pr, 0);
 		pb.setUrl(getUrl(request));
 		Map<String, Object> resJson = new HashMap();
 		if(pb != null)
@@ -255,8 +255,8 @@ public class JobHuntingServlet extends BaseServlet
 	//用户登录
 	public void UserLogin(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		String appid = request.getParameter("appid");
-		String secret = request.getParameter("appsecret");
+		String appid = "wx9dd0cd1a5ff62fb9";
+		String secret = "74afc77da4dd4677e0b78ece20d2b69f";
 		String code = request.getParameter("code");
         String grant_type = "authorization_code";
         String requestUrl = "https://api.weixin.qq.com/sns/jscode2session";
@@ -360,8 +360,6 @@ public class JobHuntingServlet extends BaseServlet
 			int pr = 10;
 			PageBean<JobHunting> pb = jobHuntingService.GetPublishMessages(pc, pr, wx_id);
 			pb.setUrl(getUrl(request));
-			//request.setAttribute("pb", pb);
-			//request.setAttribute("state", 1);
 			if(pb != null)
 			{
 				jsonString.put("records",pb);
@@ -448,12 +446,79 @@ public class JobHuntingServlet extends BaseServlet
 	}
 
 	//管理员查看记录列表,按viewNumber排序
+	public void AdaminListMessage(HttpServletRequest request, HttpServletResponse response) throws IOException
+	{
+		int pc = getPc(request);
+		int pr = 2;
+		PageBean<JobHunting> pb = jobHuntingService.GetPublishMessages(pc, pr, 1);
+		pb.setUrl(getUrl(request));
+		Map<String, Object> resJson = new HashMap();
+		if(pb != null)
+		{
+			System.out.println("admin publish successful " + pb.getBeanList().size());
+			resJson.put("state",1);
+			resJson.put("records",pb);
+		}
+		else
+		{
+			resJson.put("state",0);
+		}
+		response.getWriter().write(JSON.toJSONString(resJson));
+	}
 	
 	//管理员审查job_hunting_表
-	public void HumanCheck(HttpServletRequest request, HttpServletResponse response)
+	public void HumanCheck(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		
+		int pc = getPc(request);
+		int pr = 2;
+		PageBean<JobHunting> pb = jobHuntingService.GetHumanCheckInfo(pc, pr);
+		pb.setUrl(getUrl(request));
+		Map<String, Object> resJson = new HashMap();
+		if(pb != null)
+		{
+			System.out.println("huamn check successful " + pb.getBeanList().size());
+			resJson.put("state",1);
+			resJson.put("records",pb);
+		}
+		else
+		{
+			resJson.put("state",0);
+		}
+		response.getWriter().write(JSON.toJSONString(resJson));
 	}
+	
+	
+	public void IsPass(HttpServletRequest request, HttpServletResponse response) throws Exception
+	{
+		int state = Integer.parseInt(request.getParameter("state"));
+		int id = Integer.parseInt(request.getParameter("id"));
+		Map<String, Object> resJson = new HashMap();
+		//state = 0 审核不通过在human 和 job_hunting 删除该记录
+		boolean flag = false;
+		if(state == 0)
+		{
+			flag = jobHuntingService.NotPass(id);
+		}
+		//state = 1审核通过在human中删除记录, 把job_hunting 的记录状态设置为1
+		else if (state == 1)
+		{
+			flag = jobHuntingService.Pass(id);
+		}
+		else
+		{
+			throw new Exception("is pass state not right " + state);
+		}
+		if(flag == false)
+		{
+			resJson.put("state",0);
+		}
+		else
+		{
+			resJson.put("state",1);
+		}
+		response.getWriter().write(JSON.toJSONString(resJson));
+	}
+	
 	
 	public void RequestHumanCheck(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{

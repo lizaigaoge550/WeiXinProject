@@ -12,7 +12,7 @@ public class JobHuntingService
 	public boolean AddRecord(JobHunting record)
 	{
 		return jobHuntingDao.add(record);
-	}
+	}	
 	
 	public JobHunting UpdateRecord(int id)
 	{
@@ -24,10 +24,16 @@ public class JobHuntingService
 		return jobHuntingDao.update(id, wx_id, top, type, grade);
 	}
 	
-	public PageBean<JobHunting> GetPublishMessages(int pc, int pr)
+	public PageBean<JobHunting> GetPublishMessages(int pc, int pr, int type)
+	{
+		return jobHuntingDao.list(pc, pr, type);
+	}
+	
+	public PageBean<JobHunting> GetHumanCheckInfo(int pc, int pr)
 	{
 		return jobHuntingDao.list(pc, pr);
 	}
+	
 	
 	public PageBean<JobHunting> GetPublishMessages(int pc, int pr, String wx_id)
 	{
@@ -67,6 +73,16 @@ public class JobHuntingService
 	public boolean ModifyTelephone(String wx_id, String telephone)
 	{
 		return jobHuntingDao.modify_telephone_number(wx_id, telephone);
+	}
+	
+	public boolean NotPass(int id)
+	{
+		return jobHuntingDao.not_pass(id);
+	}
+
+	public boolean Pass(int id)
+	{
+		return jobHuntingDao.pass(id);
 	}
 }
 

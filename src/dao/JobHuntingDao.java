@@ -164,6 +164,37 @@ public class JobHuntingDao {
 		
 	}
 	
+	public PageBean<JobHunting> list(int pc, int pr, int type) //pc是当前的页数，pr是每页的记录数
+	{
+		try
+		{
+			PageBean<JobHunting> pb = new PageBean();
+			pb.setPc(pc);
+			pb.setPr(pr);
+		
+			Number number = (Number) qr.query(countSql, new ScalarHandler<>());
+			int tr = number.intValue();
+			pb.setTr(tr);
+			String sql = "";
+			if(type == 0)
+			{
+				sql = "select * from job_hunting  where grade > 0 and state = 1 order by top desc,createTime asc limit ?,?";
+			}
+			else if (type == 1)
+			{
+				sql = "select * from job_junting where state = 1 order by viewNumber desc limit ?,?";
+			}
+			Object[] params = {(pc-1)*pr, pr};
+			List<JobHunting> beanList = qr.query(sql, new BeanListHandler<>(JobHunting.class), params);
+			pb.setBeanList(beanList);
+			return pb;
+		}catch(Exception e)
+		{
+			return null;
+		}
+	}
+
+	
 	public PageBean<JobHunting> list(int pc, int pr) //pc是当前的页数，pr是每页的记录数
 	{
 		try
@@ -175,7 +206,8 @@ public class JobHuntingDao {
 			Number number = (Number) qr.query(countSql, new ScalarHandler<>());
 			int tr = number.intValue();
 			pb.setTr(tr);
-			String sql = "select * from job_hunting  order by top desc,createTime asc limit ?,?";
+			String sql = "select * from job_hunting_human";
+			
 			Object[] params = {(pc-1)*pr, pr};
 			List<JobHunting> beanList = qr.query(sql, new BeanListHandler<>(JobHunting.class), params);
 			pb.setBeanList(beanList);
@@ -185,7 +217,39 @@ public class JobHuntingDao {
 			return null;
 		}
 	}
-
+	
+	public boolean pass(int id)
+	{
+		String delete_sql = "delete from job_hunting_human where id=?";
+		String update_sql = "update job_hunting set state=1 where id = ?";
+		Object[] params = {id};
+		try {
+			qr.update(delete_sql, params);
+			qr.update(update_sql, params);
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean not_pass(int id)
+	{
+		String sql = "delete from job_hunting where id=?";
+		String sql1 = "delete from job_hunting_human where id=?";
+		Object[] params = {id};
+		try {
+			qr.update(sql, params);
+			qr.update(sql1, params);
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	//列出指定wx_id的发布记录
 	public PageBean<JobHunting> list(int pc, int pr, String wx_id) //pc是当前的页数，pr是每页的记录数
 	{
@@ -323,4 +387,5 @@ public class JobHuntingDao {
 			return false;
 		}
 	}
+
 }
