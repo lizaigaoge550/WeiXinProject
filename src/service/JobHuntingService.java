@@ -35,9 +35,9 @@ public class JobHuntingService
 	}
 	
 	
-	public PageBean<JobHunting> GetPublishMessages(int pc, int pr, String wx_id)
+	public PageBean<JobHunting> GetPublishMessages(int pc, int pr, String userid)
 	{
-		return jobHuntingDao.list(pc, pr, wx_id);
+		return jobHuntingDao.list(pc, pr, userid);
 	}
 	
 	public boolean QueryUser(String wx_id)
@@ -49,6 +49,8 @@ public class JobHuntingService
 	{
 		return jobHuntingDao.check_details_info(id);
 	}
+	
+	
 	
 	public JobHunting QueryRecord(int id)
 	{

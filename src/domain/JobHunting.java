@@ -8,7 +8,7 @@ import org.json.JSONArray;
 //wx_id, title, category, phone, text, image, top, type, start_time, end_time, view_number, comments
 public class JobHunting {
 	private int id;
-	private String wxId;
+	private String userId;
 	private String name;
 	private int gender;
 	private String title;
@@ -56,13 +56,13 @@ public class JobHunting {
 	{
 		this.state = state;
 	}
-	public String getWxId()
+	public String getUserId()
 	{
-		return wxId;
+		return userId;
 	}
-	public void setWxId(String wxId)
+	public void setUserId(String userId)
 	{
-		this.wxId = wxId;
+		this.userId = userId;
 	}
 	public int getGrade()
 	{

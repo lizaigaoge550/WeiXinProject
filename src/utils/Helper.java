@@ -51,10 +51,6 @@ public class Helper {
          {
          	grade -= 3;
          }
-         else if(top == 2)
-         {
-         	grade -= 3;
-         }
          else if(top == 3)
          {
          	grade -= 4;

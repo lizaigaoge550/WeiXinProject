@@ -7,6 +7,7 @@ public class PageBean <Object>
 	private int pc; //current page
 	private int tp; //total page
 	private int pr; //page records
+	private int tr; //total records
 	private List<Object> beanList; //
 	private String url;
 	
@@ -30,20 +31,29 @@ public class PageBean <Object>
 		this.pc = pc;
 	}
 	
+	public void setTp()
+	{
+		int tp = tr / pr;
+		this.tp = tr % pr == 0 ? tp : tp+1;
+	}
 	public int getTp()
 	{
-		int tr = tp / pr;
-		return tp % pr == 0 ? tr : tr+1;
-	}
-
-	public int getTr()
-	{
-		return tp;
+		return this.tp;
 	}
 	
-	public void setTr(int tp)
+	 public void setTp(int tp)
+	 {
+		 this.tp = tp;
+	 }
+	
+	public int getTr()
 	{
-		this.tp = tp;
+		return tr;
+	}
+	
+	public void setTr(int tr)
+	{
+		this.tr = tr;
 	}
 	
 	public int getPr()

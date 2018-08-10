@@ -21,10 +21,10 @@ import utils.*;
 public class JobHuntingDao {
 	private QueryRunner qr = new TxQueryRunner();
 	
-	private String addSql = "insert into job_hunting(wxId, title, category, phone, text, miniText, image, top"
+	private String addSql = "insert into job_hunting(userId, title, category, phone, text, miniText, image, top"
 			+ ", type, createTime, viewNumber, comments, grade, state, name, gender) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	
-	private String addSql_1 = "insert into job_hunting_human(wxId, title, category, phone, text, miniText, image, top"
+	private String addSql_1 = "insert into job_hunting_human(userId, title, category, phone, text, miniText, image, top"
 			+ ", type, createTime, viewNumber, comments, grade, state, name, gender) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	
 	private String countSql = "select count(*) from job_hunting";
@@ -105,7 +105,7 @@ public class JobHuntingDao {
 				
 		}
 		try {
-			Object[] params = {record.getWxId(), record.getTitle(), record.getCategory(),
+			Object[] params = {record.getUserId(), record.getTitle(), record.getCategory(),
 					record.getPhone(), text, miniText, record.getImage(), record.getTop(),record.getType(),
 					record.getCreateTime(), record.getViewNumber(), record.getComments(),record.getGrade(),record.getState(),
 					record.getName(), record.getGender() };	
@@ -132,9 +132,9 @@ public class JobHuntingDao {
             int top = record.getTop();
             grade = Helper.UpdateGrade(top, grade);
             //找到该用户发布的所有记录
-            String wx_id = record.getWxId();
-            sql = "update job_hunting set grade=? where wxId=?";
-            Object[] params_2 = {grade, wx_id};
+            String user_id = record.getUserId();
+            sql = "update job_hunting set grade=? where userId=?";
+            Object[] params_2 = {grade, user_id};
             qr.update(sql, params_2);
             return record;
            
@@ -146,14 +146,14 @@ public class JobHuntingDao {
 	}
 	
 	//管理员修改某记录的时候的更新
-	public boolean update(int id, String wx_id, int top, int type, int grade)
+	public boolean update(int id, String user_id, int top, int type, int grade)
 	{
 		try {
-			String sql = "update job_hunting set top = ?, type = ?, grade = ? where id=? and wxId=?";
-			Object[] params_1 = {top, type, grade, id, wx_id};
+			String sql = "update job_hunting set top = ?, type = ?, grade = ? where id=? and userId=?";
+			Object[] params_1 = {top, type, grade, id, user_id};
 			qr.update(sql , params_1);
-			sql = "update job_hunting set grade=? where wxId=?";
-			Object[] params_2 = {grade, wx_id};
+			sql = "update job_hunting set grade=? where userId=?";
+			Object[] params_2 = {grade, user_id};
 			qr.update(sql, params_2);
 			return true;
 		} catch (SQLException e) {
@@ -175,6 +175,7 @@ public class JobHuntingDao {
 			Number number = (Number) qr.query(countSql, new ScalarHandler<>());
 			int tr = number.intValue();
 			pb.setTr(tr);
+			pb.setTp(pb.getTp());
 			String sql = "";
 			if(type == 0)
 			{
@@ -250,22 +251,27 @@ public class JobHuntingDao {
 		return false;
 	}
 	
-	//列出指定wx_id的发布记录
-	public PageBean<JobHunting> list(int pc, int pr, String wx_id) //pc是当前的页数，pr是每页的记录数
+	//列出指定user_id的发布记录
+	public PageBean<JobHunting> list(int pc, int pr, String userid) //pc是当前的页数，pr是每页的记录数
 	{
 		try
 		{
 			PageBean<JobHunting> pb = new PageBean();
 			pb.setPc(pc);
 			pb.setPr(pr);
-		
-			String sql = "select count(*) from job_hunting where wxId = ?";
-			Object[] params_1 = {wx_id};
+			
+			String sql = "select count(*) from job_hunting where userId = ?";
+			
+			System.out.println("useId : "+ userid);
+			Object[] params_1 = {userid};
 			Number number = (Number) qr.query(sql, new ScalarHandler<>(), params_1);
 			int tr = number.intValue();
+			System.out.println("the total count sum : " + tr);
 			pb.setTr(tr);
-			sql = "select * from job_hunting where wxId=? order by createTime limit ?,?";
-			Object[] params_2 = {wx_id, (pc-1)*pr, pr};
+			pb.setTp();
+			System.out.println("the total page : " + pb.getTp());
+			sql = "select * from job_hunting where userId=? order by createTime limit ?,?";
+			Object[] params_2 = {userid, (pc-1)*pr, pr};
 			List<JobHunting> beanList = qr.query(sql, new BeanListHandler<>(JobHunting.class), params_2);
 			pb.setBeanList(beanList);
 			return pb;
@@ -276,11 +282,11 @@ public class JobHuntingDao {
 		}
 	}
 
-	//查询指定wx_id的发布记录(管理员)
-	public boolean query(String wx_id)
+	//查询指定user_id的发布记录(管理员)
+	public boolean query(String user_id)
 	{
-		String sql = "select * from job_hunting where wxId=?";
-		Object[] params = {wx_id};
+		String sql = "select * from job_hunting where userId=?";
+		Object[] params = {user_id};
 		try {
 			List<JobHunting> beanList = qr.query(sql, new BeanListHandler<>(JobHunting.class), params);
 			if (beanList.size() == 0)
@@ -360,7 +366,7 @@ public class JobHuntingDao {
 			List<JobHunting> beanList = qr.query(sql, new BeanListHandler<>(JobHunting.class), params);
 			assert beanList.size() == 1;
 			JobHunting record = beanList.get(0);
-			Object[] params_1 = {record.getWxId(), record.getTitle(), record.getCategory(),
+			Object[] params_1 = {record.getUserId(), record.getTitle(), record.getCategory(),
 					record.getPhone(), record.getText(), record.getMiniText(), record.getImage(), record.getTop(),record.getType(),
 					record.getCreateTime(), record.getViewNumber(), record.getComments(),record.getGrade(),record.getState()
 					,record.getName(), record.getGender()};	
@@ -374,10 +380,10 @@ public class JobHuntingDao {
 		
 	}
 
-	public boolean modify_telephone_number(String wx_id, String telephone)
+	public boolean modify_telephone_number(String user_id, String telephone)
 	{
-		String sql = "update job_hunting set telephone=? where wxId=?";
-		Object[] params = {wx_id, telephone};
+		String sql = "update job_hunting set phone=? where userId=?";
+		Object[] params = {user_id, telephone};
 		try {
 			qr.update(sql, params);
 			return true;

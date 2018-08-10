@@ -1,12 +1,14 @@
 AddPublicMessagePic 添加记录（带图片）, AddPublucMessage 添加记录 不带图片(默认 image是"")
 	需要字段 
+	user_id --> string
 	title, --> string 
 	category, --> int
 	phone, --> string
 	description --> string
-	type --> int (目前只有两种兼职or全职)
+	type --> int (目前只有两种兼职or全职 0 or 1)
+	top --> int (0,1,2,3,4)
 	name --> string
-	gender --> int
+	gender --> int(0 or 1)
 	image --> string
 
 	返回
@@ -41,10 +43,12 @@ UserLogin 获取用户openid
 	appsecret
 	code
 	返回
-	{'state':0, 'state':1}
+	{'state':1, 'uuid'}
+	{'state':0}
 	
 ShowUserInfo 用户查看自己发布的信息
-	不需要前台的字段
+	需要字段
+	user_id --> 用户id
 	返回
 	{’state‘:1, 'records':pb} 若成功，则返回该用户的记录列表
 	{'state':0}
@@ -55,6 +59,7 @@ RequestHumanCheck 当前发布信息不合法，用户可以申请人工审核
 	{'state':1， 'state':0}
 
 ModifyTelephoneNumber 用户修改自己的手机号
+	user_id --> 用户id
 	telephone -->手机号
 	返回
 	{'state':1, 'state':0}

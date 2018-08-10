@@ -4,24 +4,13 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
     <servlet>
-        <servlet-name>CustomerServlet</servlet-name>
-        <servlet-class>servlet.CustomerServlet</servlet-class>
+        <servlet-name>Servlet</servlet-name>
+        <servlet-class>servlet.Servlet</servlet-class>
     </servlet>
     
-    <servlet>
-        <servlet-name>JobHuntingServlet</servlet-name>
-        <servlet-class>servlet.JobHuntingServlet</servlet-class>
-    </servlet>
-
-
     <servlet-mapping>
-        <servlet-name>CustomerServlet</servlet-name>
-        <url-pattern>/CustomerServlet</url-pattern>
-    </servlet-mapping>
-    
-    <servlet-mapping>
-        <servlet-name>JobHuntingServlet</servlet-name>
-        <url-pattern>/JobHuntingServlet</url-pattern>
+        <servlet-name>Servlet</servlet-name>
+        <url-pattern>/Servlet</url-pattern>
     </servlet-mapping>
 
 </web-app>

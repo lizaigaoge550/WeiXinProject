@@ -53,11 +53,10 @@ public class dbTest {
 		String sql = "insert into job_hunting(wx_id, title, category, phone, text, image, top, type, start_time,"
 				+ "view_number, comments) values(?,?,?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement psta = conn.prepareStatement(sql);
-		psta.setString(1, record.getWxId());
+		psta.setString(1, record.getUserId());
 		psta.setInt(3, record.getCategory());
 		psta.setString(4, record.getPhone());
 		psta.setString(5, record.getText());
-		psta.setString(6, record.getImage());
 		psta.setInt(7, record.getTop());
 		psta.setInt(8, record.getType());
 		psta.setTimestamp(9, record.getCreateTime());
